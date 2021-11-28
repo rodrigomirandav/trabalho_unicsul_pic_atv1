@@ -1,0 +1,97 @@
+---
+title: "Universidade Cruzeiro do Sul"
+author: "Rodrigo de Miranda Videira"
+date: "28/11/2021"
+output:
+  html_notebook: default
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r}
+# Conclusão do problema
+```
+
+O problema de negócio foca na análise de dados de pacientes e valores de seguro liberados.
+Estes pacientes estão em uma faixa etária de 0 anos (bebês) até pessoas com mais idade, sendo a pessoa mais velha com 107 anos. A idade médias dos pacientes é de 57 anos, metade dos pacientes tem menos de 55 anos e a outra metade mais que 55.Temos 50% de pessoas com grande risco, e assim o valores totais liberados são maiores por este risco.
+Os valores totais liberados possuem outliers, podendo ser observado pelo gráfico de boxplot. Por estes dados estar com estes valores, não conseguiriamos aplicar uma análise preditiva para que pudessemos estimar valores para todos os tipos de pacientes. 
+
+
+
+```{r}
+# Análise Dados
+```
+
+
+- Importando bibliotecas
+
+```{r}
+library(readr)
+library(tidyverse)
+```
+
+- Carregando os dados
+
+```{r}
+df <- read_csv("pacientes.csv", show_col_types = FALSE)
+```
+
+- Analisando quantidade de observações e variáveis
+
+```{r}
+dim(df)
+# Observações = 27846
+# Variáveis = 4
+```
+
+- Analisando as variáveis
+
+```{r}
+names(df)
+
+#ID -> Identificador
+# Idade do Segurado -> (Int) idade dos segurados
+# Código do Procedimento Principal -> (Str) Código 
+# Valor Total Liberado -> (Float) Valores liberado
+```
+- Acertando tipos de dados no arquivo
+
+```{r}
+df$ID <- as.character(df$`Código do Procedimento Principal`)
+df$`Código do Procedimento Principal` <- as.character(df$`Código do Procedimento Principal`)
+```
+
+- Tirando algumas medidas estatisticas
+
+```{r}
+summary(df)
+```
+
+- Analisando a variável Idade do Segurado
+
+```{r}
+ggplot(data=df, mapping = aes(df$`Idade do Segurado`)) +
+  geom_histogram(bins = 30)
+```
+
+```{r}
+summary(df$`Idade do Segurado`)
+```
+- Analisando variável "Valor Total Liberado"
+
+
+```{r}
+summary(df$`Valor Total Liberado`)
+```
+```{r}
+ggplot(data=df, mapping = aes(df$`Valor Total Liberado`)) +
+  geom_histogram(bins = 30, na.rm = TRUE)
+```
+
+
+```{r}
+ggplot(data=df, mapping = aes(df$`Valor Total Liberado`)) +
+  geom_boxplot(na.rm = TRUE)
+```
+
